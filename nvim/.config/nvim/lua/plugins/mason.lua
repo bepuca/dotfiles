@@ -24,7 +24,9 @@ return {
                 "lua_ls",
                 "pyright",
                 -- DAPs
-                "debugpy"
+                "debugpy",
+                -- Lint / Format
+                "ruff",
             }
         }
     }
