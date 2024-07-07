@@ -9,9 +9,8 @@ return {
         end
     },
     {
-        "rcarriga/nvim-dap-ui",
+        "mfussenegger/nvim-dap",
         dependencies = {
-            "mfussenegger/nvim-dap",
             "nvim-neotest/nvim-nio",
             "mfussenegger/nvim-dap-python",
         },
@@ -21,23 +20,29 @@ return {
             {"<leader>dc", "<cmd>DapContinue<CR>", desc = "DAP Continue"},
         },
         config = function()
+            -- use pre-defined syntax groups for coloring debug information
+            vim.fn.sign_define("DapBreakpoint", {text="●", texthl="debug", numhl="", linehl=""})
+            vim.fn.sign_define("DapStopped", {text="→", texthl="debug", numhl="", linehl="todo" })
+
+            -- adds .vscode/launch.js from current folder to dap configurations
+            require("dap.ext.vscode").load_launchjs()
+
             local dap = require("dap")
-            local dapui = require("dapui")
+            local widgets = require("dap.ui.widgets")
 
-            dapui.setup()
+            vim.keymap.set('n', '<Leader>dB',
+                function() dap.set_breakpoint(nil, nil, vim.fn.input("Condition: ")) end, { desc = "Toggle Conditional [B]reakpoint" }
+            )
 
-            dap.listeners.before.attach.dapui_config = function()
-                dapui.open()
-            end
-            dap.listeners.before.launch.dapui_config = function()
-                dapui.open()
-            end
-            dap.listeners.before.event_terminated.dapui_config = function()
-                dapui.close()
-            end
-            dap.listeners.before.event_exited.dapui_config = function()
-                dapui.close()
-            end
+            vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Run [L]ast" })
+            vim.keymap.set("n", "<leader>ds", widgets.sidebar(widgets.frames).toggle, { desc = "Toggle [S]tack" })
+            vim.keymap.set("n", "<leader>dr", dap.repl.toggle, { desc = "Toggle [R]epl"} )
+            vim.keymap.set("n", "<leader>dv", widgets.sidebar(widgets.scopes).toggle, { desc = "Toggle [V]ariables"} )
+
+            vim.keymap.set("n", "<leader>dn", dap.step_over, { desc = "Step [N]ext"} )
+            vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step [I]nto"} )
+            vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step [O]ut"} )
+            vim.keymap.set("n", "<leader>df", dap.focus_frame, { desc = "Focus [F]rame"} )
         end
     }
 }
