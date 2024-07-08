@@ -7,7 +7,7 @@ return {
         { '<leader>p', "<cmd>Telescope commands<CR>", desc = 'Command [P]alette' },
         { '<leader>fh', "<cmd>Telescope help_tags<CR>", desc = '[F]ind [H]elp' },
         { '<leader>fk', "<cmd>Telescope keymaps<CR>", desc = '[F]ind [K]eymaps' },
-        { '<leader>ff', "<cmd>Telescope find_files<CR>", desc = '[F]ind [F]iles' },
+        { '<leader>ff', function() require("telescope.builtin").find_files({ hidden = true}) end, desc = '[F]ind [F]iles' },
         { '<leader>fs', "<cmd>Telescope builtin<CR>", desc = '[F]ind [S]elect Telescope' },
         { '<leader>fw', "<cmd>Telescope grep_string<CR>", desc = '[F]ind current [W]ord' },
         { '<leader>fg', "<cmd>Telescope live_grep<CR>", desc = '[F]ind by [G]rep' },
