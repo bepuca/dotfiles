@@ -16,8 +16,8 @@ return {
         },
         -- lazy load on first usage
         keys = {
-            {"<leader>db", "<cmd>DapToggleBreakpoint<CR>", desc = "DAP Toggle Breakpoint"},
-            {"<leader>dc", "<cmd>DapContinue<CR>", desc = "DAP Continue"},
+            {"<leader>db", "<cmd>DapToggleBreakpoint<CR>", desc = "Toggle [B]reakpoint"},
+            {"<leader>dc", "<cmd>DapContinue<CR>", desc = "[C]ontinue"},
         },
         config = function()
             -- use pre-defined syntax groups for coloring debug information
