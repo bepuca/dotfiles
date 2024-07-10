@@ -1,9 +1,9 @@
 return {
     'akinsho/toggleterm.nvim',
     version = "*",
-    keys = { "<leader>t", "<cmd>ToggleTerm<CR>", desc="Toggle [T]erminal"},
+    keys = { "<C-\\>", "<cmd>ToggleTerm<CR>", desc="Toggle [T]erminal"},
     opts = {
-        open_mapping = "<leader>t",
+        open_mapping = "<C-\\>",
         direction = "float"
     }
 }
