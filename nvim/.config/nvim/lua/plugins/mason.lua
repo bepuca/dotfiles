@@ -23,6 +23,7 @@ return {
                 -- LSPs
                 "lua_ls",
                 "pyright",
+                "bash-language-server",
                 -- DAPs
                 "debugpy",
                 -- Lint / Format

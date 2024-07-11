@@ -27,6 +27,7 @@ return {
         local lspconfig = require("lspconfig")
         lspconfig.lua_ls.setup({})
         lspconfig.pyright.setup({})
+        lspconfig.bashls.setup({})
         lspconfig.ruff.setup({})
     end
 }
