@@ -13,16 +13,16 @@ return {
 
             mapping = cmp.mapping.preset.insert {
                 -- Select the [n]ext item
-                ['<C-n>'] = cmp.mapping.select_next_item(),
+                ['<C-j>'] = cmp.mapping.select_next_item(),
                 -- Select the [p]revious item
-                ['<C-p>'] = cmp.mapping.select_prev_item(),
+                ['<C-k>'] = cmp.mapping.select_prev_item(),
 
-                -- Scroll the documentation window [b]ack / [f]orward
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                -- Scroll the documentation window [u]p / [d]own
+                ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+                ['<C-d>'] = cmp.mapping.scroll_docs(4),
 
-                -- Accept ([y]es) the completion.
-                ['<C-y>'] = cmp.mapping.confirm { select = true },
+                -- Accept the completion.
+                ['<TAB>'] = cmp.mapping.confirm { select = true },
 
             },
             sources = {
