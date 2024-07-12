@@ -20,6 +20,20 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+        require("rose-pine").setup({
+            groups = {
+                git_add = "foam",
+                git_change = "iris",
+                git_delete = "love",
+                git_dirty = "iris",
+                git_ignore = "muted",
+                git_merge = "iris",
+                git_rename = "pine",
+                git_stage = "iris",
+                git_text = "rose",
+                git_untracked = "subtle",
+            }
+        })
         vim.cmd.colorscheme "rose-pine-moon"
     end
 }
