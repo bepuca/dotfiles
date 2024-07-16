@@ -5,7 +5,7 @@
      config = function()
          local config = require("nvim-treesitter.configs")
          config.setup({
-             ensure_installed = {"lua", "python", "bash", "vimdoc"},
+             ensure_installed = {"lua", "python", "bash", "vimdoc", "terraform"},
              hightlight = { enable = true },
              indent = { enable = true },
          })
