@@ -5,7 +5,8 @@ return {
     opts = {
         options = {
             --- @usage 'rose-pine' | 'rose-pine-alt'
-            theme = 'rose-pine'
+            -- theme = 'rose-pine'
+            theme = 'dracula'
           }
     }
 }
