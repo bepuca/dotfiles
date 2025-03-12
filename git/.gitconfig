@@ -1,0 +1,27 @@
+[user]
+	name = bepuca
+	email = 44361528+bepuca@users.noreply.github.com
+
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
+
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+
+[alias]
+    co = checkout
+    br = branch
+    a = add
+    c = commit -m
+    ca = commit -am
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+    s = status -s -b
+    fap = fetch --all --prune
+    res = reset
+    nuke = reset --hard
+    # Switch to a branch, creating it if necessary.
+	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+[branch]
+	# Show most recently changed branches first.
+	sort = -committerdate
