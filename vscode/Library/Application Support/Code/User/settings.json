@@ -17,7 +17,6 @@
     // Theme settings
     "workbench.preferredLightColorTheme": "Aura Soft Dark",
     "workbench.preferredDarkColorTheme": "Aura Dark",
-    "workbench.colorTheme": "Ayu Mirage",
 
     // Workbench behavior
     "workbench.editor.preventPinnedEditorClose": "never",
