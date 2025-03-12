@@ -1,0 +1,584 @@
+{
+    // Editor appearance
+    "editor.fontSize": 13,
+    "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.lineNumbers": "relative",
+    "editor.rulers": [100],
+    "editor.guides.bracketPairs": "active",
+    "editor.minimap.enabled": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.autoClosingBrackets": "never",
+
+    // Window settings
+    "window.zoomLevel": 1,
+    "window.autoDetectColorScheme": true,
+
+    // Theme settings
+    "workbench.preferredLightColorTheme": "Aura Soft Dark",
+    "workbench.preferredDarkColorTheme": "Aura Dark",
+    "workbench.colorTheme": "Ayu Mirage",
+
+    // Workbench behavior
+    "workbench.editor.preventPinnedEditorClose": "never",
+
+    // Explorer settings
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.compactFolders": false,
+    "explorer.confirmPasteNative": false,
+    "files.exclude": {
+        "**/__pycache__": true
+    },
+
+    // File handling
+    "files.trimTrailingWhitespace": true,
+
+    // Terminal settings
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "terminal.integrated.suggest.enabled": true,
+
+    // Debug settings
+    "debug.console.fontSize": 14,
+    "debug.toolBarLocation": "commandCenter",
+
+
+
+    // Notebook settings
+    "notebook.output.textLineLimit": 1000,
+    "notebook.editorOptionsCustomizations": {
+        "editor.fontSize": 13
+    },
+    "notebook.scrolling.revealNextCellOnExecute": "firstLine",
+
+    // Python settings
+    "python.testing.pytestEnabled": true,
+    "python.terminal.activateEnvironment": false,
+    "python.analysis.ignore": [
+        "**/*.ipynb",
+        "notebooks/*"
+    ],
+    "python.analysis.exclude": [
+        "**/*.ipynb",
+        "notebooks/*"
+    ],
+
+    // Jupyter settings
+    "jupyter.debugJustMyCode": false,
+    "jupyter.jupyterCommandLineArguments": [
+        "--port", "8899"
+    ],
+
+    // GitHub Copilot settings
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": true,
+        "scminput": false
+    },
+    "github.copilot.editor.enableAutoCompletions": true,
+
+    // Language specific settings
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+
+    // Git settings
+    "git.blame.editorDecoration.enabled": true,
+
+    // Remote settings
+    "remote.autoForwardPortsSource": "hybrid",
+
+    // Live Server settings
+    "liveServer.settings.donotShowInfoMsg": true,
+
+    // Telemetry
+    "telemetry.telemetryLevel": "off",
+
+    // Vim settings
+    "vim.useSystemClipboard": true,
+    "vim.overrideCopy": true,
+    "vim.highlightedyank.enable": true,
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<space>"],
+            "commands": ["whichkey.show"]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<space>"],
+            "commands": ["whichkey.show"]
+        }
+    ],
+
+    // WhichKey bindings
+    "whichkey.bindings": [
+        {
+            "key": "\t",
+            "name": "Last editor",
+            "type": "commands",
+            "commands": [
+                "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+                "list.select"
+            ]
+        },
+        {
+            "key": ".",
+            "name": "Repeat most recent action",
+            "type": "command",
+            "command": "whichkey.repeatMostRecent"
+        },
+        {
+            "key": "b",
+            "name": "Buffers/Editors",
+            "type": "command",
+            "command": "workbench.action.showAllEditors"
+        },
+        {
+            "key": "d",
+            "name": "+Debug",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "d",
+                    "name": "Start debug",
+                    "type": "command",
+                    "command": "workbench.action.debug.start"
+                },
+                {
+                    "key": "s",
+                    "name": "Stop debug",
+                    "type": "command",
+                    "command": "workbench.action.debug.stop"
+                },
+                {
+                    "key": "c",
+                    "name": "Continue debug",
+                    "type": "command",
+                    "command": "workbench.action.debug.continue"
+                },
+                {
+                    "key": "r",
+                    "name": "Restart debug",
+                    "type": "command",
+                    "command": "workbench.action.debug.restart"
+                },
+                {
+                    "key": "i",
+                    "name": "Step into",
+                    "type": "command",
+                    "command": "workbench.action.debug.stepInto"
+                },
+                {
+                    "key": "n",
+                    "name": "Step over",
+                    "type": "command",
+                    "command": "workbench.action.debug.stepOver"
+                },
+                {
+                    "key": "o",
+                    "name": "Step out",
+                    "type": "command",
+                    "command": "workbench.action.debug.stepOut"
+                },
+                {
+                    "key": "b",
+                    "name": "Toggle breakpoint",
+                    "type": "command",
+                    "command": "editor.debug.action.toggleBreakpoint"
+                },
+                {
+                    "key": "j",
+                    "name": "Jump to cursor",
+                    "type": "command",
+                    "command": "debug.jumpToCursor"
+                },
+                {
+                    "key": "t",
+                    "name": "REPL",
+                    "type": "command",
+                    "command": "workbench.debug.action.toggleRepl"
+                }
+            ]
+        },
+        {
+            "key": "t",
+            "name": "+Testing",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "t",
+                    "name": "Test at cursor",
+                    "type": "command",
+                    "command": "testing.runAtCursor"
+                },
+                {
+                    "key": "d",
+                    "name": "Debug Test at cursor",
+                    "type": "command",
+                    "command": "testing.debugAtCursor"
+                },
+                {
+                    "key": "f",
+                    "name": "Test file",
+                    "type": "command",
+                    "command": "testing.runActiveFile"
+                },
+                {
+                    "key": "a",
+                    "name": "Test all",
+                    "type": "command",
+                    "command": "testing.runAll"
+                },
+                {
+                    "key": "r",
+                    "name": "Refresh tests",
+                    "type": "command",
+                    "command": "testing.refreshTests"
+                },
+                {
+                    "key": "o",
+                    "name": "Open output",
+                    "type": "command",
+                    "command": "testing.showMostRecentOutput"
+                }
+            ]
+        },
+        {
+            "key": "e",
+            "name": "+Errors",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": ".",
+                    "name": "Error transient",
+                    "type": "command",
+                    "command": "whichkey.showTransient",
+                    "args": "whichkey.transient.error"
+                },
+                {
+                    "key": "N",
+                    "name": "Previous error",
+                    "type": "command",
+                    "command": "editor.action.marker.prev"
+                },
+                {
+                    "key": "n",
+                    "name": "Next error",
+                    "type": "command",
+                    "command": "editor.action.marker.next"
+                },
+                {
+                    "key": "p",
+                    "name": "Previous error",
+                    "type": "command",
+                    "command": "editor.action.marker.prev"
+                }
+            ]
+        },
+        {
+            "key": "r",
+            "name": "+Repeat",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": ".",
+                    "name": "Repeat recent actions",
+                    "type": "command",
+                    "command": "whichkey.repeatRecent"
+                }
+            ]
+        },
+        {
+            "key": "s",
+            "name": "+Symbol",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "h",
+                    "name": "Highlight symbol transient",
+                    "type": "commands",
+                    "commands": [
+                        "editor.action.wordHighlight.trigger",
+                        "whichkey.showTransient"
+                    ],
+                    "args": [
+                        null,
+                        "whichkey.transient.symbol"
+                    ]
+                },
+                {
+                    "key": "j",
+                    "name": "Jump to symbol in file",
+                    "type": "command",
+                    "command": "workbench.action.gotoSymbol"
+                },
+                {
+                    "key": "J",
+                    "name": "Jump to symbol in workspace",
+                    "type": "command",
+                    "command": "workbench.action.showAllSymbols"
+                },
+                {
+                    "key": "p",
+                    "name": "Search in a project with a selection",
+                    "type": "commands",
+                    "commands": [
+                        "editor.action.addSelectionToNextFindMatch",
+                        "workbench.action.findInFiles"
+                    ]
+                },
+                {
+                    "key": "r",
+                    "name": "Search all references",
+                    "type": "command",
+                    "command": "editor.action.referenceSearch.trigger"
+                },
+                {
+                    "key": "R",
+                    "name": "Search all references in side bar",
+                    "type": "command",
+                    "command": "references-view.find"
+                }
+            ]
+        },
+        {
+            "key": "t",
+            "name": "+Text",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "i",
+                    "name": "Organize Imports",
+                    "type": "command",
+                    "command": "editor.action.organizeImports"
+                },
+                {
+                    "key": "r",
+                    "name": "Rename symbol",
+                    "type": "command",
+                    "command": "editor.action.rename"
+                },
+                {
+                    "key": "R",
+                    "name": "Refactor",
+                    "type": "command",
+                    "command": "editor.action.refactor"
+                },
+                {
+                    "key": ".",
+                    "name": "Quick fix",
+                    "type": "command",
+                    "command": "editor.action.quickFix"
+                },
+                {
+                    "key": "a",
+                    "name": "Find all references",
+                    "type": "command",
+                    "command": "editor.action.referenceSearch.trigger"
+                },
+                {
+                    "key": "u",
+                    "name": "To lower case",
+                    "type": "command",
+                    "command": "editor.action.transformToLowercase"
+                },
+                {
+                    "key": "U",
+                    "name": "To upper case",
+                    "type": "command",
+                    "command": "editor.action.transformToUppercase"
+                },
+                {
+                    "key": "j",
+                    "type": "commands",
+                    "name": "Move lines down transient",
+                    "commands": [
+                        "editor.action.moveLinesDownAction",
+                        "whichkey.showTransient"
+                    ],
+                    "args": [
+                        null,
+                        "whichkey.transient.lineMoving"
+                    ]
+                },
+                {
+                    "key": "k",
+                    "name": "Move lines up transient",
+                    "type": "commands",
+                    "commands": [
+                        "editor.action.moveLinesUpAction",
+                        "whichkey.showTransient"
+                    ],
+                    "args": [
+                        null,
+                        "whichkey.transient.lineMoving"
+                    ]
+                },
+                {
+                    "key": "l",
+                    "name": "+Lines",
+                    "type": "bindings",
+                    "bindings": [
+                        {
+                            "key": "s",
+                            "name": "Sort lines in ascending order",
+                            "type": "command",
+                            "command": "editor.action.sortLinesAscending"
+                        },
+                        {
+                            "key": "S",
+                            "name": "Sort lines in descending order",
+                            "type": "command",
+                            "command": "editor.action.sortLinesDescending"
+                        }
+                    ]
+                },
+                {
+                    "key": "m",
+                    "name": "+Merge conflict",
+                    "type": "bindings",
+                    "bindings": [
+                        {
+                            "key": "b",
+                            "name": "Accept both",
+                            "type": "command",
+                            "command": "merge-conflict.accept.both"
+                        },
+                        {
+                            "key": "c",
+                            "name": "Accept current",
+                            "type": "command",
+                            "command": "merge-conflict.accept.current"
+                        },
+                        {
+                            "key": "i",
+                            "name": "Accept incoming",
+                            "type": "command",
+                            "command": "merge-conflict.accept.incoming"
+                        },
+                        {
+                            "key": "B",
+                            "name": "Accept all both",
+                            "type": "command",
+                            "command": "merge-conflict.accept.all-both"
+                        },
+                        {
+                            "key": "C",
+                            "name": "Accept all current",
+                            "type": "command",
+                            "command": "merge-conflict.accept.all-current"
+                        },
+                        {
+                            "key": "I",
+                            "name": "Accept all incoming",
+                            "type": "command",
+                            "command": "merge-conflict.accept.all-incoming"
+                        },
+                        {
+                            "key": "s",
+                            "name": "Accept selection",
+                            "type": "command",
+                            "command": "merge-conflict.accept.selection"
+                        },
+                        {
+                            "key": "k",
+                            "name": "Compare current conflict",
+                            "type": "command",
+                            "command": "merge-conflict.compare"
+                        },
+                        {
+                            "key": "n",
+                            "name": "Next Conflict",
+                            "type": "command",
+                            "command": "merge-conflict.next"
+                        },
+                        {
+                            "key": "N",
+                            "name": "Previous Conflict",
+                            "type": "command",
+                            "command": "merge-conflict.previous"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "f",
+            "name": "+Fold",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "a",
+                    "name": "Toggle: around a point",
+                    "type": "command",
+                    "command": "editor.toggleFold"
+                },
+                {
+                    "key": "c",
+                    "name": "Close: at a point",
+                    "type": "command",
+                    "command": "editor.fold"
+                },
+                {
+                    "key": "b",
+                    "name": "Close: all block comments",
+                    "type": "command",
+                    "command": "editor.foldAllBlockComments"
+                },
+                {
+                    "key": "g",
+                    "name": "Close: all regions",
+                    "type": "command",
+                    "command": "editor.foldAllMarkerRegions"
+                },
+                {
+                    "key": "m",
+                    "name": "Close: all",
+                    "type": "command",
+                    "command": "editor.foldAll"
+                },
+                {
+                    "key": "o",
+                    "name": "Open: at a point",
+                    "type": "command",
+                    "command": "editor.unfold"
+                },
+                {
+                    "key": "O",
+                    "name": "Open: recursively",
+                    "type": "command",
+                    "command": "editor.unfoldRecursively"
+                },
+                {
+                    "key": "G",
+                    "name": "Open: all regions",
+                    "type": "command",
+                    "command": "editor.unfoldAllMarkerRegions"
+                },
+                {
+                    "key": "r",
+                    "name": "Open: all",
+                    "type": "command",
+                    "command": "editor.unfoldAll"
+                }
+            ]
+        },
+        {
+            "key": "v",
+            "name": "Smart select/expand region transient",
+            "type": "commands",
+            "commands": [
+                "editor.action.smartSelect.grow",
+                "whichkey.showTransient"
+            ],
+            "args": [
+                null,
+                "whichkey.transient.smartExpand"
+            ]
+        }
+    ]
+}
