@@ -4,23 +4,21 @@
     "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.lineNumbers": "relative",
-    "editor.rulers": [100],
+    "editor.rulers": [
+        100
+    ],
     "editor.guides.bracketPairs": "active",
     "editor.minimap.enabled": false,
     "editor.inlineSuggest.enabled": true,
     "editor.autoClosingBrackets": "never",
-
     // Window settings
     "window.zoomLevel": 1,
     "window.autoDetectColorScheme": true,
-
     // Theme settings
     "workbench.preferredLightColorTheme": "Aura Soft Dark",
     "workbench.preferredDarkColorTheme": "Aura Dark",
-
     // Workbench behavior
     "workbench.editor.preventPinnedEditorClose": "never",
-
     // Explorer settings
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
@@ -29,28 +27,21 @@
     "files.exclude": {
         "**/__pycache__": true
     },
-
     // File handling
     "files.trimTrailingWhitespace": true,
-
     // Terminal settings
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.enableMultiLinePasteWarning": "never",
     "terminal.integrated.suggest.enabled": true,
-
     // Debug settings
     "debug.console.fontSize": 14,
     "debug.toolBarLocation": "commandCenter",
-
-
-
     // Notebook settings
     "notebook.output.textLineLimit": 1000,
     "notebook.editorOptionsCustomizations": {
         "editor.fontSize": 13
     },
     "notebook.scrolling.revealNextCellOnExecute": "firstLine",
-
     // Python settings
     "python.testing.pytestEnabled": true,
     "python.terminal.activateEnvironment": false,
@@ -62,13 +53,12 @@
         "**/*.ipynb",
         "notebooks/*"
     ],
-
     // Jupyter settings
     "jupyter.debugJustMyCode": false,
     "jupyter.jupyterCommandLineArguments": [
-        "--port", "8899"
+        "--port",
+        "8899"
     ],
-
     // GitHub Copilot settings
     "github.copilot.enable": {
         "*": true,
@@ -77,42 +67,43 @@
         "scminput": false
     },
     "github.copilot.editor.enableAutoCompletions": true,
-
     // Language specific settings
     "[python]": {
         "editor.formatOnType": true,
         "editor.defaultFormatter": "charliermarsh.ruff"
     },
-
     // Git settings
     "git.blame.editorDecoration.enabled": true,
-
     // Remote settings
     "remote.autoForwardPortsSource": "hybrid",
-
     // Live Server settings
     "liveServer.settings.donotShowInfoMsg": true,
-
     // Telemetry
     "telemetry.telemetryLevel": "off",
-
     // Vim settings
     "vim.useSystemClipboard": true,
     "vim.overrideCopy": true,
     "vim.highlightedyank.enable": true,
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-            "before": ["<space>"],
-            "commands": ["whichkey.show"]
+            "before": [
+                "<space>"
+            ],
+            "commands": [
+                "whichkey.show"
+            ]
         }
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {
-            "before": ["<space>"],
-            "commands": ["whichkey.show"]
+            "before": [
+                "<space>"
+            ],
+            "commands": [
+                "whichkey.show"
+            ]
         }
     ],
-
     // WhichKey bindings
     "whichkey.bindings": [
         {
@@ -279,19 +270,6 @@
             ]
         },
         {
-            "key": "r",
-            "name": "+Repeat",
-            "type": "bindings",
-            "bindings": [
-                {
-                    "key": ".",
-                    "name": "Repeat recent actions",
-                    "type": "command",
-                    "command": "whichkey.repeatRecent"
-                }
-            ]
-        },
-        {
             "key": "s",
             "name": "+Symbol",
             "type": "bindings",
@@ -345,10 +323,16 @@
             ]
         },
         {
-            "key": "t",
-            "name": "+Text",
+            "key": "r",
+            "name": "+Refactor",
             "type": "bindings",
             "bindings": [
+                {
+                    "key": "f",
+                    "name": "Format File",
+                    "type": "command",
+                    "command": "editor.action.formatDocument"
+                },
                 {
                     "key": "i",
                     "name": "Organize Imports",
