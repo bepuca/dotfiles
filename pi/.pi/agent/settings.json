@@ -1,0 +1,9 @@
+{
+  "lastChangelogVersion": "0.55.0",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-5.2-codex",
+  "defaultThinkingLevel": "high",
+  "extensions": [
+    "+extensions/permission-gate.ts"
+  ]
+}

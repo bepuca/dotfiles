@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "network": {
+    "allowedDomains": ["github.com", "*.github.com"],
+    "deniedDomains": []
+  },
+  "filesystem": {
+    "denyRead": ["~/.ssh", "~/.aws"],
+    "allowWrite": [".", "/tmp"],
+    "denyWrite": [".env"]
+  }
+}
