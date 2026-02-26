@@ -9,7 +9,7 @@
     ],
     "editor.guides.bracketPairs": "active",
     "editor.minimap.enabled": false,
-    "editor.inlineSuggest.enabled": true,
+    "editor.inlineSuggest.enabled": false,
     "editor.autoClosingBrackets": "never",
     // Window settings
     "window.zoomLevel": 1,

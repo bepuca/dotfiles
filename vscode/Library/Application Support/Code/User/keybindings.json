@@ -23,6 +23,10 @@
                                      "when": "notebookEditorFocused && !inputFocus && !notebookOutputInputFocused" },
     { "key": "z z",                  "command": "notebook.centerActiveCell",
                                      "when": "notebookEditorFocused && !inputFocus" },
+    { "key": "l",                  "command": "notebook.cell.changeLanguage",
+                                     "when": "notebookEditorFocused && !inputFocus" },
+    { "key": "y",                  "command": "notebook.cell.copy",
+                                     "when": "notebookEditorFocused && !inputFocus" },
 
     // EditorOps
     { "key": "cmd+1",                "command": "workbench.action.openEditorAtIndex1" },
@@ -95,5 +99,19 @@
     { "key": "cmd+3",                "command": "workbench.action.terminal.focusAtIndex3",
                                      "when": "terminalFocus" },
     { "key": "cmd+4",                "command": "workbench.action.terminal.focusAtIndex4",
-                                     "when": "terminalFocus" },
+                                    "when": "terminalFocus"
+                                },
+                                {
+                                    "key": "shift+enter",
+                                    "command": "workbench.action.terminal.sendSequence",
+                                    "args": {
+                                        "text": "\\\r\n"
+                                    },
+                                    "when": "terminalFocus"
+                                },
+                                {
+                                    "key": "y",
+                                    "command": "-notebook.cell.changeToCode",
+                                    "when": "notebookEditorFocused && !inputFocus && !notebookOutputFocused && activeEditor == 'workbench.editor.notebook' && notebookCellType == 'markup'"
+                                },
 ]
