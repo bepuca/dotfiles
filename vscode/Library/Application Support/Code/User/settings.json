@@ -80,6 +80,9 @@
     "liveServer.settings.donotShowInfoMsg": true,
     // Telemetry
     "telemetry.telemetryLevel": "off",
+    // devcontainer settings
+    "dotfiles.repository": "https://github.com/bepuca/dotfiles",
+    "dotfiles.installCommand": "devcontainer-install.sh",
     // Vim settings
     "vim.useSystemClipboard": true,
     "vim.overrideCopy": true,
