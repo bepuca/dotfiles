@@ -1,10 +1,17 @@
 {
-  "lastChangelogVersion": "0.55.1",
+  "lastChangelogVersion": "0.57.1",
   "defaultProvider": "github-copilot",
-  "defaultModel": "gpt-5.2-codex",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "medium",
   "extensions": [
     "+extensions/permission-gate.ts"
   ],
-  "theme": "aura-dark"
+  "theme": "aura-dark",
+  "treeFilterMode": "default",
+  "enabledModels": [
+    "github-copilot/claude-opus-4.6",
+    "github-copilot/claude-sonnet-4.6",
+    "github-copilot/gpt-5.4",
+    "github-copilot/gpt-5.3-codex"
+  ]
 }

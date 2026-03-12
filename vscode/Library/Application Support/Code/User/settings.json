@@ -82,7 +82,7 @@
     "telemetry.telemetryLevel": "off",
     // devcontainer settings
     "dotfiles.repository": "https://github.com/bepuca/dotfiles",
-    "dotfiles.installCommand": "devcontainer-install.sh",
+    "dotfiles.installCommand": "devcontainer-setup.sh",
     // Vim settings
     "vim.useSystemClipboard": true,
     "vim.overrideCopy": true,
@@ -566,5 +566,7 @@
                 "whichkey.transient.smartExpand"
             ]
         }
-    ]
+    ],
+    "@azure.argTenant": "",
+    "chat.viewSessions.orientation": "stacked"
 }
