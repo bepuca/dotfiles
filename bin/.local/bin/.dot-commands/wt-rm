@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Remove the current worktree.
+
+set -euo pipefail
+
+if [ "$#" -ne 0 ]; then
+  echo "Usage: dot wt-rm" >&2
+  exit 1
+fi
+
+if ! worktree_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+  echo "Not inside a git repo." >&2
+  exit 1
+fi
+
+common_dir="$(git rev-parse --git-common-dir)"
+main_root="$(dirname "$common_dir")"
+
+if [ "$worktree_root" = "$main_root" ]; then
+  echo "Refusing to remove the main worktree." >&2
+  exit 1
+fi
+
+cd /
+git -C "$main_root" worktree remove "$worktree_root"
+
+echo "Removed $worktree_root"
