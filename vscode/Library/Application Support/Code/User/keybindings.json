@@ -87,6 +87,27 @@
     { "key": "o",                    "command": "explorer.newFile",
                                      "when": "filesExplorerFocus && !inputFocus"},
 
+    // SourceControlOps
+    { "key": "cmd+g",                "command": "-workbench.action.gotoLine" },
+    { "key": "cmd+g",                "command": "runCommands",
+                                     "args": { "commands": ["workbench.view.scm", "workbench.scm.action.focusNextResourceGroup"] },
+                                     "when": "editorFocus" },
+    { "key": "cmd+g",                "command": "runCommands",
+                                     "args": { "commands": ["workbench.action.closeSidebar", "workbench.action.focusActiveEditorGroup"] },
+                                     "when": "activeViewlet == workbench.view.scm && !editorFocus" },
+
+    // DiffEditorOps
+    { "key": "ctrl+h",               "command": "workbench.action.compareEditor.focusSecondarySide",
+                                     "when": "isInDiffEditor && editorTextFocus" },
+    { "key": "ctrl+l",               "command": "workbench.action.compareEditor.focusPrimarySide",
+                                     "when": "isInDiffEditor && editorTextFocus" },
+    { "key": "u",                    "command": "diffEditor.revert",
+                                     "when": "isInDiffEditor && editorTextFocus" },
+    { "key": "] c",                  "command": "workbench.action.compareEditor.nextChange",
+                                     "when": "isInDiffEditor" },
+    { "key": "[ c",                  "command": "workbench.action.compareEditor.previousChange",
+                                     "when": "isInDiffEditor" },
+
     // TerminalOps
     { "key": "cmd+t",                "command": "workbench.action.terminal.new",
                                      "when": "terminalFocus" },
@@ -99,19 +120,7 @@
     { "key": "cmd+3",                "command": "workbench.action.terminal.focusAtIndex3",
                                      "when": "terminalFocus" },
     { "key": "cmd+4",                "command": "workbench.action.terminal.focusAtIndex4",
-                                    "when": "terminalFocus"
-                                },
-                                {
-                                    "key": "shift+enter",
-                                    "command": "workbench.action.terminal.sendSequence",
-                                    "args": {
-                                        "text": "\\\r\n"
-                                    },
-                                    "when": "terminalFocus"
-                                },
-                                {
-                                    "key": "y",
-                                    "command": "-notebook.cell.changeToCode",
-                                    "when": "notebookEditorFocused && !inputFocus && !notebookOutputFocused && activeEditor == 'workbench.editor.notebook' && notebookCellType == 'markup'"
-                                },
+                                    "when": "terminalFocus"},
+    { "key": "cmd+m",               "command": "workbench.action.toggleMaximizedPanel",
+                                    "when": "terminalFocus"}
 ]
