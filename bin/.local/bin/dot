@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BIN_DIR="$(cd "$(dirname "$0")" && pwd)"
+COMMANDS_DIR="$BIN_DIR/.dot-commands"
+
+second_line() {
+  local first line
+  read first
+  read line
+  echo "${line#\# }"
+}
+
+print_help() {
+  local desc file gap
+  local padding="                    "
+
+  echo "Usage: dot <command> [args]"
+  echo
+  echo "Commands:"
+
+  for cmd in $(ls -1 "$COMMANDS_DIR" 2>/dev/null); do
+    file="$COMMANDS_DIR/$cmd"
+    [ -x "$file" ] || continue
+
+    desc="$(second_line < "$file")"
+    gap="${padding:${#cmd}}"
+    [ -n "$gap" ] || gap="  "
+    echo "  $cmd$gap$desc"
+  done
+}
+
+if [ "$#" -eq 0 ]; then
+  print_help
+  exit 0
+fi
+
+case "$1" in
+  help|-h|--help)
+    print_help
+    exit 0
+    ;;
+esac
+
+cmd="$1"
+shift
+script="$COMMANDS_DIR/$cmd"
+
+if [ -x "$script" ]; then
+  exec "$script" "$@"
+fi
+
+echo "Unknown command: $cmd" >&2
+echo >&2
+print_help >&2
+exit 1
