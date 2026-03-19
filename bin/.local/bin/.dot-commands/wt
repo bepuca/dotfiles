@@ -20,6 +20,34 @@ parent_dir="$(dirname "$repo_root")"
 dir_name="$repo_name-${branch//\//-}"
 target="$parent_dir/$dir_name"
 
+copy_ignored_paths() {
+  local source_root="$1"
+  local destination_root="$2"
+  local path
+  local normalized_path
+
+  while IFS= read -r -d '' path; do
+    case "$path" in
+      .git|.git/|.git/*)
+        continue
+        ;;
+    esac
+
+    normalized_path="${path%/}"
+
+    if [ -z "$normalized_path" ] || [ ! -e "$source_root/$normalized_path" ]; then
+      continue
+    fi
+
+    if [ -e "$destination_root/$normalized_path" ]; then
+      continue
+    fi
+
+    mkdir -p "$destination_root/$(dirname "$normalized_path")"
+    cp -a "$source_root/$normalized_path" "$destination_root/$normalized_path"
+  done < <(git -C "$source_root" ls-files -z --others -i --exclude-standard --directory)
+}
+
 if [ -e "$target" ]; then
   echo "Path already exists: $target" >&2
   exit 1
@@ -30,5 +58,7 @@ if git -C "$repo_root" show-ref --verify --quiet "refs/heads/$branch"; then
 else
   git -C "$repo_root" worktree add --relative-paths -b "$branch" "$target"
 fi
+
+copy_ignored_paths "$repo_root" "$target"
 
 echo "$target"
