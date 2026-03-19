@@ -26,9 +26,9 @@ if [ -e "$target" ]; then
 fi
 
 if git -C "$repo_root" show-ref --verify --quiet "refs/heads/$branch"; then
-  git -C "$repo_root" worktree add "$target" "$branch"
+  git -C "$repo_root" worktree add --relative-paths "$target" "$branch"
 else
-  git -C "$repo_root" worktree add -b "$branch" "$target"
+  git -C "$repo_root" worktree add --relative-paths -b "$branch" "$target"
 fi
 
 echo "$target"

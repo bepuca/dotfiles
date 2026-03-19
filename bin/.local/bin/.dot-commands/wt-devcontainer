@@ -1,0 +1,92 @@
+#!/usr/bin/env -S uv run --script
+# Update the repo devcontainer in place for worktree-friendly mounts.
+# /// script
+# dependencies = [
+#   "json5",
+# ]
+# ///
+
+"""Update the repo devcontainer in place for worktree-friendly devcontainers."""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+from pathlib import Path
+from typing import NoReturn
+
+import json5
+
+OVERLAY = {
+    "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces,type=bind,consistency=cached",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+}
+
+
+def die(message: str) -> NoReturn:
+    """Exit with an error message."""
+    print(message, file=sys.stderr)
+    raise SystemExit(1)
+
+
+def git(*args: str) -> str:
+    """Run git and return stdout."""
+    result = subprocess.run(
+        ["git", *args],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        die(result.stderr.strip() or "git command failed")
+    return result.stdout.strip()
+
+
+def load_jsonc(path: Path) -> dict:
+    """Load a devcontainer file, allowing JSONC-style comments and trailing commas."""
+    try:
+        data = json5.loads(path.read_text())
+    except ValueError as exc:
+        die(f"Failed to parse {path}: {exc}")
+
+    if not isinstance(data, dict):
+        die(f"Expected {path} to contain a JSON object.")
+
+    return data
+
+
+def find_config_path(repo_root: Path) -> Path:
+    """Find the repo devcontainer config to update."""
+    dir_config = repo_root / ".devcontainer" / "devcontainer.json"
+    root_config = repo_root / ".devcontainer.json"
+
+    if dir_config.exists() and root_config.exists():
+        die("Found both .devcontainer/devcontainer.json and .devcontainer.json; refusing to guess.")
+
+    if dir_config.exists():
+        return dir_config
+
+    if root_config.exists():
+        return root_config
+
+    die("No devcontainer config found (.devcontainer/devcontainer.json or .devcontainer.json).")
+
+
+def main() -> None:
+    """Apply the worktree-friendly overlay to the repo devcontainer file."""
+    if len(sys.argv) != 1:
+        die("Usage: dot wt-devcontainer")
+
+    repo_root = Path(git("rev-parse", "--show-toplevel")).resolve()
+    config_path = find_config_path(repo_root)
+
+    config = load_jsonc(config_path)
+    config.update(OVERLAY)
+
+    config_path.write_text(json.dumps(config, indent=2) + "\n")
+    print(config_path)
+
+
+if __name__ == "__main__":
+    main()
