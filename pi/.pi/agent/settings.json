@@ -4,7 +4,8 @@
   "defaultModel": "gpt-5.4",
   "defaultThinkingLevel": "high",
   "extensions": [
-    "+extensions/permission-gate.ts"
+    "+extensions/permission-gate.ts",
+    "+extensions/review.ts"
   ],
   "theme": "aura-dark",
   "treeFilterMode": "default",
