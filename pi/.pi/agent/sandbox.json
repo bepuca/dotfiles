@@ -1,6 +1,7 @@
 {
   "enabled": true,
-  "network": {
+  "network": null,
+  "networkDisabledBackup": {
     "allowedDomains": ["github.com", "*.github.com"],
     "deniedDomains": []
   },

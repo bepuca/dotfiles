@@ -45,8 +45,11 @@ import { SandboxManager, type SandboxRuntimeConfig } from "@anthropic-ai/sandbox
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { type BashOperations, createBashTool } from "@mariozechner/pi-coding-agent";
 
-interface SandboxConfig extends SandboxRuntimeConfig {
+type SandboxNetworkConfig = SandboxRuntimeConfig["network"];
+
+interface SandboxConfig extends Omit<SandboxRuntimeConfig, "network"> {
 	enabled?: boolean;
+	network?: SandboxNetworkConfig | null;
 }
 
 const DEFAULT_CONFIG: SandboxConfig = {
@@ -103,8 +106,10 @@ function deepMerge(base: SandboxConfig, overrides: Partial<SandboxConfig>): Sand
 	const result: SandboxConfig = { ...base };
 
 	if (overrides.enabled !== undefined) result.enabled = overrides.enabled;
-	if (overrides.network) {
-		result.network = { ...base.network, ...overrides.network };
+	if (overrides.network === null) {
+		result.network = null;
+	} else if (overrides.network) {
+		result.network = { ...(base.network ?? DEFAULT_CONFIG.network), ...overrides.network };
 	}
 	if (overrides.filesystem) {
 		result.filesystem = { ...base.filesystem, ...overrides.filesystem };
@@ -257,22 +262,26 @@ export default function (pi: ExtensionAPI) {
 				ignoreViolations?: Record<string, string[]>;
 				enableWeakerNestedSandbox?: boolean;
 			};
-
-			await SandboxManager.initialize({
-				network: config.network,
+			const initConfig = {
 				filesystem: config.filesystem,
 				ignoreViolations: configExt.ignoreViolations,
 				enableWeakerNestedSandbox: configExt.enableWeakerNestedSandbox,
-			});
+				...(config.network !== null && config.network !== undefined ? { network: config.network } : {}),
+			};
+
+			await SandboxManager.initialize(initConfig as SandboxRuntimeConfig);
 
 			sandboxEnabled = true;
 			sandboxInitialized = true;
 
-			const networkCount = config.network?.allowedDomains?.length ?? 0;
+			const networkStatus =
+				config.network === null || config.network === undefined
+					? "network unrestricted"
+					: `${config.network.allowedDomains.length} domains`;
 			const writeCount = config.filesystem?.allowWrite?.length ?? 0;
 			ctx.ui.setStatus(
 				"sandbox",
-				ctx.ui.theme.fg("accent", `🔒 Sandbox: ${networkCount} domains, ${writeCount} write paths`),
+				ctx.ui.theme.fg("accent", `🔒 Sandbox: ${networkStatus}, ${writeCount} write paths`),
 			);
 			ctx.ui.notify("Sandbox initialized", "info");
 		} catch (err) {
@@ -304,8 +313,12 @@ export default function (pi: ExtensionAPI) {
 				"Sandbox Configuration:",
 				"",
 				"Network:",
-				`  Allowed: ${config.network?.allowedDomains?.join(", ") || "(none)"}`,
-				`  Denied: ${config.network?.deniedDomains?.join(", ") || "(none)"}`,
+				...(config.network === null || config.network === undefined
+					? ["  Disabled: unrestricted"]
+					: [
+						`  Allowed: ${config.network.allowedDomains.join(", ") || "(none)"}`,
+						`  Denied: ${config.network.deniedDomains.join(", ") || "(none)"}`,
+					]),
 				"",
 				"Filesystem:",
 				`  Deny Read: ${config.filesystem?.denyRead?.join(", ") || "(none)"}`,
