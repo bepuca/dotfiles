@@ -266,7 +266,11 @@ export default function (pi: ExtensionAPI) {
 				filesystem: config.filesystem,
 				ignoreViolations: configExt.ignoreViolations,
 				enableWeakerNestedSandbox: configExt.enableWeakerNestedSandbox,
-				...(config.network !== null && config.network !== undefined ? { network: config.network } : {}),
+				// sandbox-runtime currently expects config.network to exist during initialize(),
+				// even when we want wrapWithSandbox() to leave network unrestricted.
+				// An empty object keeps initialize() happy while preserving unrestricted
+				// network because allowedDomains stays undefined.
+				network: (config.network ?? {}) as SandboxRuntimeConfig["network"],
 			};
 
 			await SandboxManager.initialize(initConfig as SandboxRuntimeConfig);
