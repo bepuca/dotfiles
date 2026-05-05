@@ -568,5 +568,7 @@
         }
     ],
     "@azure.argTenant": "",
-    "chat.viewSessions.orientation": "stacked"
+    "workbench.iconTheme": "vs-minimal",
+    "chat.viewSessions.orientation": "stacked",
+    "security.workspace.trust.untrustedFiles": "open"
 }
