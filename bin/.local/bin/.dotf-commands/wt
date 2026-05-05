@@ -4,7 +4,7 @@
 set -euo pipefail
 
 if [ "$#" -ne 1 ]; then
-  echo "Usage: dot wt <branch>" >&2
+  echo "Usage: dotf wt <branch>" >&2
   exit 1
 fi
 

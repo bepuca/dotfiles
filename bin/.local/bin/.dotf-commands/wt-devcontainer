@@ -76,7 +76,7 @@ def find_config_path(repo_root: Path) -> Path:
 def main() -> None:
     """Apply the worktree-friendly overlay to the repo devcontainer file."""
     if len(sys.argv) != 1:
-        die("Usage: dot wt-devcontainer")
+        die("Usage: dotf wt-devcontainer")
 
     repo_root = Path(git("rev-parse", "--show-toplevel")).resolve()
     config_path = find_config_path(repo_root)
