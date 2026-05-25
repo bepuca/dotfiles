@@ -13,3 +13,4 @@ My instructions override codebase conventions unless I explicitly say otherwise.
 - Always use `f""` strings.
 - Keep docstrings minimal: one line only when the name is not enough.
 - Add brief comments only where code is non-obvious.
+- Do not populate `__init__.py` unless explicitly told to.
