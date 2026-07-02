@@ -37,15 +37,52 @@
  * Linux also requires: bubblewrap, socat, ripgrep
  */
 
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { SandboxManager, type SandboxRuntimeConfig } from "@anthropic-ai/sandbox-runtime";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { type BashOperations, createBashTool } from "@mariozechner/pi-coding-agent";
 
-type SandboxNetworkConfig = SandboxRuntimeConfig["network"];
+type SandboxNetworkConfig = {
+	allowedDomains?: string[];
+	deniedDomains?: string[];
+};
+
+type SandboxRuntimeConfig = {
+	network?: SandboxNetworkConfig;
+	filesystem?: {
+		denyRead?: string[];
+		allowWrite?: string[];
+		denyWrite?: string[];
+	};
+	ignoreViolations?: Record<string, string[]>;
+	enableWeakerNestedSandbox?: boolean;
+};
+
+type SandboxManagerType = {
+	initialize(config: SandboxRuntimeConfig): Promise<void>;
+	wrapWithSandbox(command: string): Promise<string>;
+	reset(): Promise<void>;
+};
+
+type BashOperations = {
+	exec(
+		command: string,
+		cwd: string,
+		options: {
+			onData?: (data: Buffer) => void;
+			signal?: AbortSignal;
+			timeout?: number;
+		},
+	): Promise<{ exitCode: number | null }>;
+};
+
+type CreateBashTool = (cwd: string, options?: { operations?: BashOperations }) => {
+	name: string;
+	label?: string;
+	execute: (id: string, params: unknown, signal?: AbortSignal, onUpdate?: unknown, ctx?: unknown) => Promise<unknown>;
+	[key: string]: unknown;
+};
 
 interface SandboxConfig extends Omit<SandboxRuntimeConfig, "network"> {
 	enabled?: boolean;
@@ -131,14 +168,14 @@ function deepMerge(base: SandboxConfig, overrides: Partial<SandboxConfig>): Sand
 	return result;
 }
 
-function createSandboxedBashOps(): BashOperations {
+function createSandboxedBashOps(sandboxManager: SandboxManagerType): BashOperations {
 	return {
 		async exec(command, cwd, { onData, signal, timeout }) {
 			if (!existsSync(cwd)) {
 				throw new Error(`Working directory does not exist: ${cwd}`);
 			}
 
-			const wrappedCommand = await SandboxManager.wrapWithSandbox(command);
+			const wrappedCommand = await sandboxManager.wrapWithSandbox(command);
 
 			return new Promise((resolve, reject) => {
 				const child = spawn("bash", ["-c", wrappedCommand], {
@@ -200,7 +237,65 @@ function createSandboxedBashOps(): BashOperations {
 	};
 }
 
-export default function (pi: ExtensionAPI) {
+function commandExists(command: string): boolean {
+	const result = spawnSync("sh", ["-lc", `command -v ${command}`], { stdio: "ignore" });
+	return result.status === 0;
+}
+
+function getPlatformUnavailableReason(): string | undefined {
+	const platform = process.platform;
+	if (platform !== "darwin" && platform !== "linux") {
+		return `sandboxing is not supported on ${platform}`;
+	}
+
+	if (platform === "darwin" && !commandExists("sandbox-exec")) {
+		return "sandbox-exec is not available";
+	}
+
+	if (platform === "linux") {
+		const missing = ["bwrap", "socat", "rg"].filter((command) => !commandExists(command));
+		if (missing.length > 0) {
+			return `missing required command(s): ${missing.join(", ")}`;
+		}
+	}
+
+	return undefined;
+}
+
+async function loadCreateBashTool(): Promise<CreateBashTool> {
+	for (const packageName of ["@mariozechner/pi-coding-agent", "@earendil-works/pi-coding-agent"]) {
+		try {
+			const module = (await import(packageName)) as { createBashTool?: CreateBashTool };
+			if (module.createBashTool) {
+				return module.createBashTool;
+			}
+		} catch {
+			// Try the next package name.
+		}
+	}
+
+	throw new Error("could not import createBashTool from pi-coding-agent");
+}
+
+async function loadSandboxManager(): Promise<SandboxManagerType> {
+	const module = (await import("@anthropic-ai/sandbox-runtime")) as { SandboxManager?: SandboxManagerType };
+	if (!module.SandboxManager) {
+		throw new Error("@anthropic-ai/sandbox-runtime did not export SandboxManager");
+	}
+	return module.SandboxManager;
+}
+
+export default async function (pi: ExtensionAPI) {
+	let createBashTool: CreateBashTool;
+	try {
+		createBashTool = await loadCreateBashTool();
+	} catch (error) {
+		pi.on("session_start", (_event, ctx) => {
+			ctx.ui.notify(`Sandbox extension disabled: ${error instanceof Error ? error.message : String(error)}`, "warning");
+		});
+		return;
+	}
+
 	pi.registerFlag("no-sandbox", {
 		description: "Disable OS-level sandboxing for bash commands",
 		type: "boolean",
@@ -210,27 +305,29 @@ export default function (pi: ExtensionAPI) {
 	const localCwd = process.cwd();
 	const localBash = createBashTool(localCwd);
 
+	let sandboxManager: SandboxManagerType | undefined;
 	let sandboxEnabled = false;
 	let sandboxInitialized = false;
+	let unavailableReason: string | undefined;
 
 	pi.registerTool({
 		...localBash,
 		label: "bash (sandboxed)",
 		async execute(id, params, signal, onUpdate, _ctx) {
-			if (!sandboxEnabled || !sandboxInitialized) {
+			if (!sandboxEnabled || !sandboxInitialized || !sandboxManager) {
 				return localBash.execute(id, params, signal, onUpdate);
 			}
 
 			const sandboxedBash = createBashTool(localCwd, {
-				operations: createSandboxedBashOps(),
+				operations: createSandboxedBashOps(sandboxManager),
 			});
 			return sandboxedBash.execute(id, params, signal, onUpdate);
 		},
 	});
 
 	pi.on("user_bash", () => {
-		if (!sandboxEnabled || !sandboxInitialized) return;
-		return { operations: createSandboxedBashOps() };
+		if (!sandboxEnabled || !sandboxInitialized || !sandboxManager) return;
+		return { operations: createSandboxedBashOps(sandboxManager) };
 	});
 
 	pi.on("session_start", async (_event, ctx) => {
@@ -250,14 +347,16 @@ export default function (pi: ExtensionAPI) {
 			return;
 		}
 
-		const platform = process.platform;
-		if (platform !== "darwin" && platform !== "linux") {
+		unavailableReason = getPlatformUnavailableReason();
+		if (unavailableReason) {
 			sandboxEnabled = false;
-			ctx.ui.notify(`Sandbox not supported on ${platform}`, "warning");
+			ctx.ui.notify(`Sandbox extension disabled: ${unavailableReason}`, "warning");
 			return;
 		}
 
 		try {
+			sandboxManager = await loadSandboxManager();
+
 			const configExt = config as unknown as {
 				ignoreViolations?: Record<string, string[]>;
 				enableWeakerNestedSandbox?: boolean;
@@ -270,10 +369,10 @@ export default function (pi: ExtensionAPI) {
 				// even when we want wrapWithSandbox() to leave network unrestricted.
 				// An empty object keeps initialize() happy while preserving unrestricted
 				// network because allowedDomains stays undefined.
-				network: (config.network ?? {}) as SandboxRuntimeConfig["network"],
+				network: config.network ?? {},
 			};
 
-			await SandboxManager.initialize(initConfig as SandboxRuntimeConfig);
+			await sandboxManager.initialize(initConfig as SandboxRuntimeConfig);
 
 			sandboxEnabled = true;
 			sandboxInitialized = true;
@@ -281,7 +380,7 @@ export default function (pi: ExtensionAPI) {
 			const networkStatus =
 				config.network === null || config.network === undefined
 					? "network unrestricted"
-					: `${config.network.allowedDomains.length} domains`;
+					: `${config.network.allowedDomains?.length ?? 0} domains`;
 			const writeCount = config.filesystem?.allowWrite?.length ?? 0;
 			ctx.ui.setStatus(
 				"sandbox",
@@ -290,14 +389,15 @@ export default function (pi: ExtensionAPI) {
 			ctx.ui.notify("Sandbox initialized", "info");
 		} catch (err) {
 			sandboxEnabled = false;
-			ctx.ui.notify(`Sandbox initialization failed: ${err instanceof Error ? err.message : err}`, "error");
+			sandboxInitialized = false;
+			ctx.ui.notify(`Sandbox extension disabled: ${err instanceof Error ? err.message : String(err)}`, "warning");
 		}
 	});
 
 	pi.on("session_shutdown", async () => {
-		if (sandboxInitialized) {
+		if (sandboxInitialized && sandboxManager) {
 			try {
-				await SandboxManager.reset();
+				await sandboxManager.reset();
 			} catch {
 				// Ignore cleanup errors
 			}
@@ -308,7 +408,7 @@ export default function (pi: ExtensionAPI) {
 		description: "Show sandbox configuration",
 		handler: async (_args, ctx) => {
 			if (!sandboxEnabled) {
-				ctx.ui.notify("Sandbox is disabled", "info");
+				ctx.ui.notify(`Sandbox is disabled${unavailableReason ? `: ${unavailableReason}` : ""}`, "info");
 				return;
 			}
 
@@ -320,8 +420,8 @@ export default function (pi: ExtensionAPI) {
 				...(config.network === null || config.network === undefined
 					? ["  Disabled: unrestricted"]
 					: [
-						`  Allowed: ${config.network.allowedDomains.join(", ") || "(none)"}`,
-						`  Denied: ${config.network.deniedDomains.join(", ") || "(none)"}`,
+						`  Allowed: ${config.network.allowedDomains?.join(", ") || "(none)"}`,
+						`  Denied: ${config.network.deniedDomains?.join(", ") || "(none)"}`,
 					]),
 				"",
 				"Filesystem:",

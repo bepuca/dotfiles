@@ -10,7 +10,8 @@ My instructions override codebase conventions unless I explicitly say otherwise.
 - Cover meaningful cases, not every permutation.
 
 ## Python
+- Always use `uv run python`
 - Always use `f""` strings.
-- Keep docstrings minimal: one line only when the name is not enough.
-- Add brief comments only where code is non-obvious.
+- Be brief in comments and docstrings. Mainly to explain why's.
+- Do not add comments to explain clear and simple code.
 - Do not populate `__init__.py` unless explicitly told to.
