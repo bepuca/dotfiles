@@ -1,7 +1,7 @@
 {
     // Editor appearance
     "editor.fontSize": 13,
-    "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "'FiraCode Nerd Font Mono', 'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.lineNumbers": "relative",
     "editor.rulers": [
@@ -30,6 +30,7 @@
     // File handling
     "files.trimTrailingWhitespace": true,
     // Terminal settings
+    "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.enableMultiLinePasteWarning": "never",
     "terminal.integrated.suggest.enabled": true,
