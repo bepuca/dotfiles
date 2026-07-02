@@ -1,0 +1,11 @@
+theme = aura
+
+macos-titlebar-style = hidden
+
+font-family = FiraCode Nerd Font Mono
+font-size = 15
+
+window-padding-x = 10
+window-padding-y = 4
+keybind = shift+enter=text:\n
+
