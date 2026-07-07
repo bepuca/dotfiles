@@ -6,7 +6,7 @@
  * simplified for this configuration.
  */
 
-import type { ExtensionAPI, ExtensionContext, ExtensionCommandContext } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 

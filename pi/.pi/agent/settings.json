@@ -5,8 +5,13 @@
   "defaultThinkingLevel": "medium",
   "extensions": [
     "+extensions/permission-gate.ts",
+    "+extensions/tool-gate.ts",
+    "+extensions/monitor.ts",
     "+extensions/review.ts"
   ],
+  "toolGate": {
+    "monitor": ["monitor_start", "monitor_stop", "monitor_list"]
+  },
   "theme": "aura-dark",
   "treeFilterMode": "default",
   "enabledModels": [
